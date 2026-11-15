@@ -1,0 +1,59 @@
+# Git Ignore for FinPilot AI
+
+# Virtual environments
+.venv/
+.venv*/
+venv/
+env/
+ENV/
+
+# Python cache & bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Environment Variables & Secrets (CRITICAL: Never commit to Git)
+.env
+.env.local
+.env.*.local
+.streamlit/secrets.toml
+
+# Databases & local persistent storage
+*.db
+*.sqlite
+*.sqlite3
+finpilot.db
+
+# Large artifacts & generated files
+artifacts/logs/
+artifacts/charts/
+artifacts/vector_db/
+# Keep directory structures but ignore big data
+!artifacts/models/.gitkeep
+
+# Node & Frontend dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDE & OS files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Temporary scratch & build artifacts
+dist/
+build/
+*.egg-info/
+update_tour_modal.py
+scratch/

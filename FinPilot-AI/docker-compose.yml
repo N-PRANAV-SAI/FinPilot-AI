@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  finpilot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finpilot-ai
+    ports:
+      - "8501:8501"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - GEMINI_MODEL=${GEMINI_MODEL:-gemini-3.8-flash}
+      - FINNHUB_API_KEY=${FINNHUB_API_KEY}
+      - NEWSAPI_KEY=${NEWSAPI_KEY}
+      - EODHD_API_KEY=${EODHD_API_KEY}
+      - FMP_API_KEY=${FMP_API_KEY}
+      - SEC_USER_AGENT=${SEC_USER_AGENT:-FinPilotAI research@university.edu}
+      - MARKET_DATA_PROVIDER=${MARKET_DATA_PROVIDER:-auto}
+      - DATABASE_URL=sqlite:////app/finpilot.db
+    volumes:
+      - finpilot_data:/app/artifacts
+      - finpilot_db:/app
+    restart: unless-stopped
+
+volumes:
+  finpilot_data:
+  finpilot_db:
