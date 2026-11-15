@@ -27,6 +27,8 @@ from frontend.model_monitoring import render_model_monitoring
 from frontend.data_quality_monitor import render_data_quality_monitor
 from frontend.portfolio_terminal import render_portfolio_terminal
 from frontend.stock_screener_page import render_stock_screener_page
+from frontend.rag_page import render_rag
+from frontend.company_analysis import render_company_analysis
 from frontend.demo_mode import render_demo_mode
 from frontend.styles import apply_styles
 
@@ -95,6 +97,8 @@ PAGES = {
     "Backtesting": {"func": render_backtesting_lab, "icon": "📉", "desc": "Historical strategy testing with anti-leakage safeguards"},
     "Model Monitor": {"func": render_model_monitoring, "icon": "🤖", "desc": "ML governance, model cards & drift audit"},
     "Data Quality": {"func": render_data_quality_monitor, "icon": "📡", "desc": "Provider health, data freshness & provenance"},
+    "Financial Documents": {"func": render_rag, "icon": "📄", "desc": "Upload annual reports, 10-K filings & semantic AI search"},
+    "AI Research Reports": {"func": render_company_analysis, "icon": "📑", "desc": "In-depth multi-asset research report with ratios & statements"},
     "Watchlist": {"func": render_watchlist_page, "icon": "⭐", "desc": "Target company monitor & price alerts"},
     "AI Assistant": {"func": render_ai_assistant_page, "icon": "🤖", "desc": "24/7 intelligent financial mentor"},
     "Learn": {"func": render_learning_page, "icon": "🎓", "desc": "Beginner lessons, quizzes & glossary"},
