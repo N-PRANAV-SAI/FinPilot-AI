@@ -55,7 +55,7 @@ user = st.session_state["user"]
 
 if not user:
     # Check if guest demo mode was requested
-    if st.session_state.get("guest_demo_mode"):
+    if st.session_state.get("guest_demo_mode") or st.query_params.get("demo") == "true":
         user = {
             "user_id": 1,
             "name": "Guest Evaluator",
@@ -65,6 +65,7 @@ if not user:
             "onboarding_completed": True,
         }
         st.session_state["user"] = user
+        st.session_state["guest_demo_mode"] = True
     else:
         # Show Auth modal with Demo Guest Quick Login Option
         col_m1, col_m2 = st.columns([3, 1])
@@ -107,7 +108,10 @@ PAGES = {
 }
 
 # Programmatic navigation handling
-if "nav" in st.session_state and st.session_state["nav"] in PAGES:
+query_page = st.query_params.get("page")
+if query_page and query_page in PAGES:
+    nav_index = list(PAGES.keys()).index(query_page)
+elif "nav" in st.session_state and st.session_state["nav"] in PAGES:
     nav_index = list(PAGES.keys()).index(st.session_state["nav"])
     del st.session_state["nav"]
 else:
