@@ -65,7 +65,7 @@ def render_company_detail_page(ticker: str = None):
                         Exchange: <b>{exchange}</b> &nbsp;|&nbsp; 
                         Country: <b>{country}</b> &nbsp;|&nbsp; 
                         Sector: <b>{fundamentals.get('sector', 'N/A')}</b> &nbsp;|&nbsp; 
-                        Market Cap: <b>{format_currency_amount(market_cap, currency, curr_sym) if isinstance(market_cap, (int, float)) else market_cap}</b>
+                        Market Cap: <b>{format_currency_amount(market_cap, currency) if isinstance(market_cap, (int, float)) else market_cap}</b>
                     </div>
                 </div>
                 <div style="text-align: right;">
