@@ -1,3 +1,1 @@
-# FinPilot AI — Linux System Packages for Streamlit Community Cloud
-# libgomp1 is required for XGBoost and OpenMP multi-threading on Debian/Ubuntu
 libgomp1
