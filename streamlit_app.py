@@ -5,17 +5,20 @@ configures page metadata, and mounts the complete FinPilot AI terminal.
 """
 import os
 import sys
+import runpy
 from pathlib import Path
 
 # Ensure application directories are on python search path
 CURRENT_DIR = Path(__file__).resolve().parent
+INNER_APP_DIR = CURRENT_DIR / "FinPilot-AI"
+
+target_dir = INNER_APP_DIR if INNER_APP_DIR.exists() else CURRENT_DIR
+if str(target_dir) not in sys.path:
+    sys.path.insert(0, str(target_dir))
 if str(CURRENT_DIR) not in sys.path:
     sys.path.insert(0, str(CURRENT_DIR))
 
-# Ensure child directory is on path if executing from parent
-INNER_APP_DIR = CURRENT_DIR / "FinPilot-AI"
-if INNER_APP_DIR.exists() and str(INNER_APP_DIR) not in sys.path:
-    sys.path.insert(0, str(INNER_APP_DIR))
+os.chdir(str(target_dir))
 
 # Bridge Streamlit Cloud Secrets into environment variables before any module loads
 try:
@@ -27,9 +30,5 @@ try:
 except Exception:
     pass
 
-# Execute the primary Streamlit application
-try:
-    import app
-except ModuleNotFoundError:
-    os.chdir(str(INNER_APP_DIR))
-    import app
+app_file = target_dir / "app.py"
+runpy.run_path(str(app_file), run_name="__main__")
