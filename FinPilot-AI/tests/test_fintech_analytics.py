@@ -8,6 +8,7 @@ from backend.analytics.risk_analytics import compute_portfolio_risk_analytics
 from backend.analytics.backtesting import run_backtest
 from backend.analytics.data_quality import audit_ticker_data_quality, get_all_providers_health
 from backend.analytics.screener import screen_stocks, compare_companies_side_by_side
+from frontend.stock_screener_page import _coerce_numeric_metrics
 
 
 def test_quant_metrics_calculation():
@@ -107,3 +108,17 @@ def test_screener_and_comparison():
 
     comp = compare_companies_side_by_side(["NVDA", "AAPL"])
     assert len(comp["comparison_table"]) == 2
+
+
+def test_screener_display_numeric_metrics_handle_unavailable_values():
+    frame = pd.DataFrame({
+        "P/E Ratio": [28.5, "N/A"],
+        "Beta": [1.2, "N/A"],
+    })
+
+    normalized = _coerce_numeric_metrics(frame, ("P/E Ratio", "Beta"))
+
+    assert pd.api.types.is_numeric_dtype(normalized["P/E Ratio"])
+    assert normalized["P/E Ratio"].iloc[0] == 28.5
+    assert pd.isna(normalized["P/E Ratio"].iloc[1])
+    assert pd.isna(normalized["Beta"].iloc[1])

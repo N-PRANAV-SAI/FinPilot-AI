@@ -12,6 +12,13 @@ COUNTRIES = ["All Countries", "United States", "India", "Japan", "Germany", "Uni
 EXCHANGES = ["All Exchanges", "NASDAQ", "NSE", "TSE", "XETRA", "LSE", "HKEX", "KRX"]
 
 
+def _coerce_numeric_metrics(frame: pd.DataFrame, columns: tuple[str, ...]) -> pd.DataFrame:
+    for column in columns:
+        if column in frame.columns:
+            frame[column] = pd.to_numeric(frame[column], errors="coerce")
+    return frame
+
+
 def render_stock_screener_page():
     """Render global multi-exchange stock screener and comparison terminal."""
     st.markdown("""
@@ -70,6 +77,7 @@ def render_stock_screener_page():
                 }
                 for r in results
             ])
+            df_screen = _coerce_numeric_metrics(df_screen, ("P/E Ratio", "Beta"))
             st.dataframe(df_screen, use_container_width=True, hide_index=True)
         else:
             st.info("No companies matched the current screening criteria. Try relaxing your filters.")
