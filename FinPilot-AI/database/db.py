@@ -1,4 +1,6 @@
 """Database engine and session factory."""
+from threading import Lock
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 from config.settings import settings
@@ -7,11 +9,22 @@ connect_args = {"check_same_thread": False} if settings.database_url.startswith(
 engine = create_engine(settings.database_url, connect_args=connect_args, future=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, future=True)
 Base = declarative_base()
+_db_init_lock = Lock()
+_db_initialized = False
 
 
 def init_db():
-    from database import models  # noqa: F401 — registers ORM models
-    Base.metadata.create_all(bind=engine)
+    global _db_initialized
+    if _db_initialized:
+        return
+
+    with _db_init_lock:
+        if _db_initialized:
+            return
+
+        from database import models  # noqa: F401 — registers ORM models
+        Base.metadata.create_all(bind=engine)
+        _db_initialized = True
 
 
 def get_session():
