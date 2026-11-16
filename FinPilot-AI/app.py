@@ -27,6 +27,7 @@ from frontend.model_monitoring import render_model_monitoring
 from frontend.data_quality_monitor import render_data_quality_monitor
 from frontend.portfolio_terminal import render_portfolio_terminal
 from frontend.stock_screener_page import render_stock_screener_page
+from frontend.sentiment_page import render_sentiment
 from frontend.rag_page import render_rag
 from frontend.company_analysis import render_company_analysis
 from frontend.demo_mode import render_demo_mode
@@ -88,6 +89,7 @@ PAGES = {
     "Home": {"func": render_home_page, "icon": "🏠", "desc": "Executive portfolio snapshot & market overview"},
     "Global Markets": {"func": render_market_overview_page, "icon": "🌍", "desc": "Global exchange benchmark indices"},
     "Stock Screener": {"func": render_stock_screener_page, "icon": "🔎", "desc": "Multi-exchange fundamental & technical screener"},
+    "Sentiment": {"func": render_sentiment, "icon": "📰", "desc": "FinBERT financial news sentiment analysis"},
     "Explore": {"func": render_company_detail_page, "icon": "🔍", "desc": "Global company research & interactive charts"},
     "Profit Predictor": {"func": render_profit_predictor_page, "icon": "📈", "desc": "AI return forecasts, scenarios & goal simulator"},
     "Orders": {"func": render_virtual_investing_page, "icon": "🟢", "desc": "Simulated order ticket & trade execution"},

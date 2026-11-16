@@ -11,7 +11,7 @@ def render_sentiment():
 
     analysis = st.session_state.get("analysis")
     if not analysis:
-        st.info("💡 Please run an analysis from the **Dashboard** first.")
+        st.info("💡 Open **Explore**, select a company, and run its quantitative analysis first.")
         return
 
     sentiment = analysis.get("sentiment", {})
