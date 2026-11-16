@@ -225,19 +225,21 @@ def render_company_detail_page(ticker: str = None):
     # TAB 3: NEWS & FINBERT SENTIMENT
     with t_news:
         st.markdown("#### Real Financial News & FinBERT Tone Analysis")
-        with st.spinner("Analyzing news tone with ProsusAI/finbert transformer..."):
-            news_items = fetch_news(ticker, limit=6)
+        with st.spinner("Loading recent financial news..."):
+            news_items = fetch_news(ticker)[:6]
 
         if news_items:
             for n in news_items:
-                sent = n.get("sentiment_label", "Neutral")
-                sent_color = "#10b981" if sent == "Positive" else ("#f43f5e" if sent == "Negative" else "#94a3b8")
+                sent = str(n.get("sentiment_label") or n.get("label") or "")
+                sent_color = "#10b981" if sent.lower() == "positive" else ("#f43f5e" if sent.lower() == "negative" else "#94a3b8")
+                published = n.get("published_date") or n.get("published_at") or "Recent"
+                summary = n.get("summary") or n.get("text") or ""
                 st.markdown(f"""
                     <div style="background: #0f172a; border: 1px solid #1e293b; border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="font-size: 0.8rem; color: #64748b;">{n.get('published_date', 'Recent')} • {n.get('source', 'Financial Wire')}</span>
+                            <span style="font-size: 0.8rem; color: #64748b;">{published} • {n.get('source', 'Financial Wire')}</span>
                             <span style="background: #1e293b; color: {sent_color}; font-size: 0.75rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; border: 1px solid {sent_color};">
-                                FinBERT: {sent.upper()}
+                                {f"FinBERT: {sent.title()}" if sent else "FinBERT: unavailable"}
                             </span>
                         </div>
                         <h4 style="margin: 6px 0; font-size: 1.05rem; color: #f8fafc;">
@@ -245,7 +247,7 @@ def render_company_detail_page(ticker: str = None):
                                 {n.get('title', 'Financial update')} ↗
                             </a>
                         </h4>
-                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">{n.get('summary', '')[:200]}...</p>
+                        <p style="color: #94a3b8; font-size: 0.85rem; margin: 0;">{summary[:200]}{'...' if len(summary) > 200 else ''}</p>
                     </div>
                 """, unsafe_allow_html=True)
         else:
